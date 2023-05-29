@@ -7,7 +7,5 @@ const { validateUserData, validateUserAvatar, validateUserId } = require('../uti
 router.get('/me', getCurrentUserData);
 router.get('/', getUsers);
 router.patch('/me', validateUserData, updateUserData);
-router.patch('/me/avatar', validateUserAvatar, updateUserAvatar);
-router.get('/:userId', validateUserId, getUserDataById);
 
 module.exports = router;

@@ -9,14 +9,16 @@ const {
   handleErrors,
   NotFoundError,
 } = require('../utils/handleErrors');
+// не забыть удалить потом
 router.get('/crash-test', (req, res) => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
+
 router.post('/signin', validateLogin, login);
 router.post('/signup', validateRegister, createUser);
-router.get('/signout', logout);
+router.post('/signout', logout);
 
 router.use(auth);
 router.use('/users', userRoutes);

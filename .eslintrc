@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "extends": ["airbnb-base", "plugin:prettier/recommended", "prettier"],
   "rules": {
     "no-underscore-dangle": [
       "error",
@@ -7,7 +7,7 @@
         "allow": ["_id"]
       }
     ],
-    "import/no-extraneous-dependencies": "off"
-    // "no-console": "off"
+    "import/no-extraneous-dependencies": "off",
+    "no-console": "off"
   }
 }

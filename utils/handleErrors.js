@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const http2 = require('http2');
-const { ForbiddenError } = require('../errors/ForbiddenError');
-const { NotFoundError } = require('../errors/NotFoundError');
-const { UnauthorizedError } = require('../errors/UnauthorizedError');
+const { ForbiddenError } = require('../errors/ForbiddenError'); //403
+const { NotFoundError } = require('../errors/NotFoundError'); //404
+const { UnauthorizedError } = require('../errors/UnauthorizedError'); //401
 
 const {
   HTTP_STATUS_CREATED, // 201
@@ -14,7 +14,7 @@ const { CastError, ValidationError } = mongoose.Error;
 
 function handleErrors (error, response) {
   if (error.code === 11000) {
-    return response.status(HTTP_STATUS_CONFLICT).send({ message: 'Пользователь с данным email уже существует' });
+    return response.status(HTTP_STATUS_CONFLICT).send({ message: 'Ошибка добавления. Данные должны быть уникальными, в базе уже есть добавляемая информация' });
   }
   if (error instanceof NotFoundError
     || error instanceof UnauthorizedError

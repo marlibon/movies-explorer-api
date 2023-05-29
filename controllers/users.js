@@ -20,7 +20,7 @@ module.exports.getCurrentUserData = (req, res, next) => {
     })
     .catch(next);
 };
-
+// не забыть удалить потом
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.send(users))
@@ -41,11 +41,11 @@ module.exports.getUserDataById = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const {
-    email, password, name, about, avatar,
+    email, password, name,
   } = req.body;
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
-      email, password: hash, name, about, avatar,
+      email, password: hash, name
     })
       .then((user) => res.status(HTTP_STATUS_CREATED).send(user))
       .catch(next));
@@ -90,8 +90,8 @@ const updateUser = (req, res, next, updateData) => {
 
 // декоратор для обновления имени и описания пользователя
 module.exports.updateUserData = (req, res, next) => {
-  const { name, about } = req.body;
-  updateUser(req, res, next, { name, about });
+  const { name, email } = req.body;
+  updateUser(req, res, next, { name, email });
 };
 
 // декоратор для обновления аватара пользователя

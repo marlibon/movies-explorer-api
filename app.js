@@ -25,6 +25,8 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { handleErrors } = require('./utils/handleErrors');
 // подключаем модуль чтобы убрать лишнюю информацию в ответе сервера (с целью безопасности)
 const helmet = require('helmet');
+// подключаем настройки для rateLimiter (ограничение одинаковых запросов по времени)
+const { limiter } = require('./utils/rateLimiter');
 // распарсим данные, которые пришли
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -39,7 +41,9 @@ mongoose.connect(MONGODB_URI, {
 
 // для безопасности (отключает информацию о сервере)
 app.use(helmet());
+// для ограничения большого числа запросов
 
+app.use(limiter);
 // опции для заголовков. Разрешаем доступ с любого места и определяем доступные методы + заголовки
 const corsOptions = {
   origin: '*',
@@ -72,5 +76,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // вывод в консоль информации, куда подключаться
 app.listen(PORT, () => {
-  console.log('Ссылка на сервер:', ${ BASE_PATH }: ${ PORT });
+  console.log('Ссылка на сервер:', `${BASE_PATH}: ${PORT}`);
 });
