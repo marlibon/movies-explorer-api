@@ -1,42 +1,43 @@
 // подключаем модуль для работы с путями файлов
-const path = require('path');
+const path = require("path");
 // подключаем ExpressJS
-const express = require('express');
+const express = require("express");
 // подключаем модуль для работы с переменными окружения
-require('dotenv').config();
+require("dotenv").config();
 
 // создаем приложение
 const app = express();
 // подключаем Mongoose для работы с MongoDB
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 // подключаем модуль cors для обработки CORS-запросов
-const cors = require('cors');
+const cors = require("cors");
 // подключаем модуль для работы с куками
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 // подключаем модуль celebrate для валидации данных
-const { errors } = require('celebrate');
+const { errors } = require("celebrate");
 // подключаем переменные окружения
-const { PORT, BASE_PATH, MONGODB_URI } = require('./config');
+const helmet = require("helmet");
+const { PORT, BASE_PATH, MONGODB_URI } = require("./config");
 // подключаем роуты
-const routes = require('./routes/index');
+const routes = require("./routes/index");
 // подключаем логгер запросов и ошибок
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { requestLogger, errorLogger } = require("./middlewares/logger");
 // подключаем функцию для обработки ошибок
-const { handleErrors } = require('./utils/handleErrors');
+const { handleErrors } = require("./utils/handleErrors");
 // подключаем модуль чтобы убрать лишнюю информацию в ответе сервера (с целью безопасности)
-const helmet = require('helmet');
 // подключаем настройки для rateLimiter (ограничение одинаковых запросов по времени)
-const { limiter } = require('./utils/rateLimiter');
+const { limiter } = require("./utils/rateLimiter");
 // распарсим данные, которые пришли
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // подключаемся к БД
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true,
-})
-  .then(() => console.log('DB is connected'))
+mongoose
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("DB is connected"))
   .catch((err) => console.log(err));
 
 // для безопасности (отключает информацию о сервере)
@@ -46,9 +47,9 @@ app.use(helmet());
 app.use(limiter);
 // опции для заголовков. Разрешаем доступ с любого места и определяем доступные методы + заголовки
 const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization"],
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
@@ -68,13 +69,13 @@ app.use(errors());
 
 // обработка ошибок в миддлвэр
 app.use((err, req, res, next) => {
-  handleErrors(err, res)
+  handleErrors(err, res);
 });
 
 // выводим index.html при обращении через браузер
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // вывод в консоль информации, куда подключаться
 app.listen(PORT, () => {
-  console.log('Ссылка на сервер:', `${BASE_PATH}: ${PORT}`);
+  console.log("Ссылка на сервер:", `${BASE_PATH}: ${PORT}`);
 });

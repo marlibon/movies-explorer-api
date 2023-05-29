@@ -1,5 +1,5 @@
-const { Joi, celebrate } = require('celebrate');
-const { URL_REGEXP } = require('../constants');
+const { Joi, celebrate } = require("celebrate");
+const { URL_REGEXP } = require("../constants");
 
 module.exports.validateMovieData = celebrate({
   body: Joi.object().keys({
@@ -13,7 +13,7 @@ module.exports.validateMovieData = celebrate({
     image: Joi.string().required().pattern(URL_REGEXP),
     trailerLink: Joi.string().required().pattern(URL_REGEXP),
     thumbnail: Joi.string().required().pattern(URL_REGEXP),
-    movieId: Joi.number().required()
+    movieId: Joi.number().required(),
   }),
 });
 
