@@ -1,5 +1,5 @@
 const Movie = require("../models/movie");
-const { HTTP_STATUS_CREATED, handleErrors } = require("../utils/handleErrors");
+const { HTTP_STATUS_CREATED } = require("../utils/handleErrors");
 const { ForbiddenError } = require("../errors/ForbiddenError");
 const { NotFoundError } = require("../errors/NotFoundError");
 

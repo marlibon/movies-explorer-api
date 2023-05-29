@@ -3,14 +3,8 @@ const {
   getUsers,
   getCurrentUserData,
   updateUserData,
-  updateUserAvatar,
-  getUserDataById,
 } = require("../controllers/users");
-const {
-  validateUserData,
-  validateUserAvatar,
-  validateUserId,
-} = require("../utils/validate/userValidate");
+const { validateUserData } = require("../utils/validate/userValidate");
 
 router.get("/me", getCurrentUserData);
 router.get("/", getUsers);

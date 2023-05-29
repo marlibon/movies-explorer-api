@@ -1,6 +1,5 @@
 const { Joi, celebrate } = require("celebrate");
-const { URL_REGEXP } = require("../constants");
-
+s
 module.exports.validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),

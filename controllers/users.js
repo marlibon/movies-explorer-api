@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const {
-  handleErrors,
   HTTP_STATUS_CREATED,
   NotFoundError,
 } = require("../utils/handleErrors");
@@ -94,10 +93,4 @@ const updateUser = (req, res, next, updateData) => {
 module.exports.updateUserData = (req, res, next) => {
   const { name, email } = req.body;
   updateUser(req, res, next, { name, email });
-};
-
-// декоратор для обновления аватара пользователя
-module.exports.updateUserAvatar = (req, res, next) => {
-  const { avatar } = req.body;
-  updateUser(req, res, next, { avatar });
 };

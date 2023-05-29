@@ -68,7 +68,7 @@ app.use(errorLogger);
 app.use(errors());
 
 // обработка ошибок в миддлвэр
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   handleErrors(err, res);
 });
 
