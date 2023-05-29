@@ -16,12 +16,7 @@ module.exports.getCurrentUserData = (req, res, next) => {
     })
     .catch(next);
 };
-// не забыть удалить потом
-module.exports.getUsers = (req, res, next) => {
-  User.find({})
-    .then((users) => res.send(users))
-    .catch(next);
-};
+
 module.exports.getUserDataById = (req, res, next) => {
   const _id = req.params.userId;
   User.findById({ _id })

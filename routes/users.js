@@ -7,7 +7,6 @@ const {
 const { validateUserData } = require("../utils/validate/userValidate");
 
 router.get("/me", getCurrentUserData);
-router.get("/", getUsers);
 router.patch("/me", validateUserData, updateUserData);
 
 module.exports = router;
