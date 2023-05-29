@@ -1,5 +1,5 @@
 const { Joi, celebrate } = require("celebrate");
-s
+
 module.exports.validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
