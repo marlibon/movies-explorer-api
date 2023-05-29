@@ -10,9 +10,7 @@
 
 IP 62.84.116.218
 
-Frontend https://marlibon.nomoredomains.monster
-
-Backend https://api.marlibon.nomoredomains.monster
+Backend https://api.marlibon.nomoredomains.rocks
 
 ## Используемые технологии
 
@@ -21,18 +19,10 @@ Backend https://api.marlibon.nomoredomains.monster
 - NodeJS
 - Express
 - MongoDB
-
-Фронтенд:
-
-- React
-- React Router
+- Nginx
+- http/https
 
 ## Запуск проекта:
-
-Фронтенд:
-
-`npm run start` — запускает сервер в dev-режиме
-`npm run build` — собирает приложение
 
 Бэкенд:
 
