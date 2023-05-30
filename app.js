@@ -32,13 +32,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// подключаемся к БД
-mongoose
-  .connect(MONGODB_URI, {
-    useNewUrlParser: true,
-  })
-  .then(() => console.log("DB is connected"))
-  .catch((err) => console.log(err));
 
 // подключаем логгер запросов
 app.use(requestLogger);
@@ -58,6 +51,14 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 app.use(cors(corsOptions));
+
+// подключаемся к БД
+mongoose
+  .connect(MONGODB_URI, {
+    useNewUrlParser: true,
+  })
+  .then(() => console.log("DB is connected"))
+  .catch((err) => console.log(err));
 
 // настройка роутов
 app.use(routes);
