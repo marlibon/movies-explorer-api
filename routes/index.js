@@ -12,9 +12,9 @@ const { handleErrors, NotFoundError } = require("../utils/handleErrors");
 
 router.post("/signin", validateLogin, login);
 router.post("/signup", validateRegister, createUser);
-router.post("/signout", logout);
 
 router.use(auth);
+router.post("/signout", logout);
 router.use("/users", userRoutes);
 router.use("/movies", movieRoutes);
 router.use("*", (req, res) => {

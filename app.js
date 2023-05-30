@@ -40,11 +40,15 @@ mongoose
   .then(() => console.log("DB is connected"))
   .catch((err) => console.log(err));
 
+// подключаем логгер запросов
+app.use(requestLogger);
+
+// для ограничения большого числа запросов
+app.use(limiter);
+
 // для безопасности (отключает информацию о сервере)
 app.use(helmet());
-// для ограничения большого числа запросов
 
-app.use(limiter);
 // опции для заголовков. Разрешаем доступ с любого места и определяем доступные методы + заголовки
 const corsOptions = {
   origin: "*",
@@ -54,9 +58,6 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 app.use(cors(corsOptions));
-
-// подключаем логгер запросов
-app.use(requestLogger);
 
 // настройка роутов
 app.use(routes);
@@ -68,8 +69,8 @@ app.use(errorLogger);
 app.use(errors());
 
 // обработка ошибок в миддлвэр
-app.use((err, req, res) => {
-  handleErrors(err, res);
+app.use((err, req, res, next) => {
+  handleErrors(err, res, next);
 });
 
 // выводим index.html при обращении через браузер

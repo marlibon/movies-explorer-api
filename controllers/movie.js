@@ -5,7 +5,8 @@ const { NotFoundError } = require("../errors/NotFoundError");
 
 // получение всех карточек
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .populate([{ path: "owner", model: "user" }])
     .then((cards) => res.send(cards))
     .catch(next);
@@ -13,6 +14,7 @@ module.exports.getMovies = (req, res, next) => {
 
 // создание карточки
 module.exports.createMovie = (req, res, next) => {
+  const owner = req.user._id;
   const {
     country,
     director,
@@ -26,24 +28,32 @@ module.exports.createMovie = (req, res, next) => {
     thumbnail,
     movieId,
   } = req.body;
-  const owner = req.user;
-  Movie.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    nameRU,
-    nameEN,
-    image,
-    trailerLink,
-    thumbnail,
-    movieId,
-    owner,
-  })
-    .then((card) => card.populate("owner"))
-    .then((card) => res.status(HTTP_STATUS_CREATED).send(card))
-    .catch(next);
+
+  Movie.find({ owner, movieId })
+    .then((findedCard) => {
+      if (findedCard.length) {
+        throw new ForbiddenError("этот фильм уже добавлен ранее");
+      } else {
+        Movie.create({
+          country,
+          director,
+          duration,
+          year,
+          description,
+          nameRU,
+          nameEN,
+          image,
+          trailerLink,
+          thumbnail,
+          movieId,
+          owner,
+        })
+          .then((card) => card.populate("owner"))
+          .then((card) => res.status(HTTP_STATUS_CREATED).send(card))
+          .catch(next);
+      }
+    })
+    .catch((err) => next(err));
 };
 
 // удаление карточки
@@ -54,7 +64,7 @@ module.exports.deleteMovie = (req, res, next) => {
     .populate([{ path: "owner", model: "user" }])
     .then((card) => {
       if (!card) {
-        throw new NotFoundError("Карточка фильма уже удалена");
+        throw new NotFoundError("Карточка фильма не найдена");
       }
       if (card.owner._id.toString() !== req.user._id.toString()) {
         throw new ForbiddenError("У вас нет прав на удаление этого фильма");

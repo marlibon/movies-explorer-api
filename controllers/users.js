@@ -32,15 +32,18 @@ module.exports.getUserDataById = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const { email, password, name } = req.body;
-  bcrypt.hash(password, 10).then((hash) =>
-    User.create({
-      email,
-      password: hash,
-      name,
-    })
-      .then((user) => res.status(HTTP_STATUS_CREATED).send(user))
-      .catch(next)
-  );
+  bcrypt
+    .hash(password, 10)
+    .then((hash) =>
+      User.create({
+        email,
+        password: hash,
+        name,
+      })
+        .then((user) => res.status(HTTP_STATUS_CREATED).send(user))
+        .catch(next)
+    )
+    .catch(next);
 };
 
 module.exports.logout = (_, res) => {
