@@ -2,6 +2,7 @@ const Movie = require("../models/movie");
 const { HTTP_STATUS_CREATED } = require("../utils/handleErrors");
 const { ForbiddenError } = require("../errors/ForbiddenError");
 const { NotFoundError } = require("../errors/NotFoundError");
+const { ConflictError } = require("../errors/ConflictError");
 
 // получение всех карточек
 module.exports.getMovies = (req, res, next) => {
@@ -30,9 +31,9 @@ module.exports.createMovie = (req, res, next) => {
   } = req.body;
 
   Movie.find({ owner, movieId })
-    .then((findedCard) => {
-      if (findedCard.length) {
-        throw new ForbiddenError("этот фильм уже добавлен ранее");
+    .then((foundCard) => {
+      if (foundCard.length) {
+        throw new ConflictError("Этот фильм уже добавлен ранее");
       } else {
         Movie.create({
           country,

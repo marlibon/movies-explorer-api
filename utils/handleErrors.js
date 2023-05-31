@@ -3,6 +3,7 @@ const http2 = require("http2");
 const { ForbiddenError } = require("../errors/ForbiddenError"); // 403
 const { NotFoundError } = require("../errors/NotFoundError"); // 404
 const { UnauthorizedError } = require("../errors/UnauthorizedError"); // 401
+const { ConflictError } = require("../errors/ConflictError"); // 409
 
 const {
   HTTP_STATUS_CREATED, // 201
@@ -12,7 +13,7 @@ const {
 } = http2.constants;
 const { CastError, ValidationError } = mongoose.Error;
 
-function handleErrors(error, response) {
+function handleErrors (error, response) {
   if (error.code === 11000) {
     return response.status(HTTP_STATUS_CONFLICT).send({
       message:
@@ -22,6 +23,7 @@ function handleErrors(error, response) {
   if (
     error instanceof NotFoundError ||
     error instanceof UnauthorizedError ||
+    error instanceof ConflictError ||
     error instanceof ForbiddenError
   ) {
     const { message } = error;
