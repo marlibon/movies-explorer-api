@@ -40,7 +40,20 @@ module.exports.createUser = (req, res, next) => {
         password: hash,
         name,
       })
-        .then((user) => res.status(HTTP_STATUS_CREATED).send(user))
+        .then((user) => {
+          const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+            expiresIn: "7d",
+          });
+          const resp = { token, name: user.name, email: user.email };
+          res
+            .cookie("token", token, {
+              maxAge: 7 * 24 * 60 * 60 * 1000, // 7дней
+              sameSite: true,
+              httpOnly: true,
+            })
+            .status(HTTP_STATUS_CREATED)
+            .send(resp);
+        })
         .catch(next)
     )
     .catch(next);
@@ -63,7 +76,7 @@ module.exports.login = (req, res, next) => {
           sameSite: true,
           httpOnly: true,
         })
-        .send({ message: "Вы успешно авторизованы" });
+        .send({ token });
     })
     .catch(next);
 };
