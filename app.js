@@ -43,14 +43,20 @@ app.use(helmet());
 
 // опции для заголовков. Разрешаем доступ с любого места и определяем доступные методы + заголовки
 const corsOptions = {
-  origin: "*",
+  origin: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://marlibon.nomoredomains.rocks",
+    "http://marlibon.nomoredomains.rocks",
+  ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
   preflightContinue: false,
   optionsSuccessStatus: 204,
+  credentials: true,
 };
-app.use(cors(corsOptions));
 
+app.use(cors(corsOptions));
 // подключаемся к БД
 mongoose
   .connect(MONGODB_URI, {

@@ -30,57 +30,46 @@ module.exports.getUserDataById = (req, res, next) => {
     .catch(next);
 };
 
+const generateTokenAndSendResponse = (res, user) => {
+  const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "7d" });
+  const resp = {
+    token,
+    name: user.name,
+    email: user.email,
+    _id: user._id,
+  };
+  res
+    .cookie("token", token, {
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7дней
+      sameSite: true,
+      httpOnly: true,
+    })
+    .status(HTTP_STATUS_CREATED)
+    .send(resp);
+};
+
 module.exports.createUser = (req, res, next) => {
   const { email, password, name } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hash) =>
-      User.create({
-        email,
-        password: hash,
-        name,
-      })
-        .then((user) => {
-          const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-            expiresIn: "7d",
-          });
-          const resp = { token, name: user.name, email: user.email };
-          res
-            .cookie("token", token, {
-              maxAge: 7 * 24 * 60 * 60 * 1000, // 7дней
-              sameSite: true,
-              httpOnly: true,
-            })
-            .status(HTTP_STATUS_CREATED)
-            .send(resp);
-        })
-        .catch(next)
-    )
+    .then((hash) => {
+      User.create({ email, password: hash, name })
+        .then((user) => generateTokenAndSendResponse(res, user))
+        .catch(next);
+    })
+    .catch(next);
+};
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+  User.findUserByCredentials(email, password)
+    .then((user) => generateTokenAndSendResponse(res, user))
     .catch(next);
 };
 
 module.exports.logout = (_, res) => {
   res.clearCookie("token").send({ message: "Вы вышли из профиля" });
 };
-
-module.exports.login = (req, res, next) => {
-  const { email, password } = req.body;
-  User.findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-        expiresIn: "7d",
-      });
-      res
-        .cookie("token", token, {
-          maxAge: 7 * 24 * 60 * 60 * 1000, // 7дней
-          sameSite: true,
-          httpOnly: true,
-        })
-        .send({ token });
-    })
-    .catch(next);
-};
-
 // функция для обновления данных пользователя
 const updateUser = (req, res, next, updateData) => {
   User.findByIdAndUpdate(req.user._id, updateData, {
