@@ -5,7 +5,6 @@ const {
   validateRegister,
 } = require("../utils/validate/userValidate");
 const userRoutes = require("./users");
-const categoryRoutes = require("./category");
 const movieRoutes = require("./movies");
 const auth = require("../middlewares/auth");
 
@@ -17,7 +16,6 @@ router.post("/signup", validateRegister, createUser);
 router.use(auth);
 router.post("/signout", logout);
 router.use("/users", userRoutes);
-router.use("/category", categoryRoutes);
 router.use("/movies", movieRoutes);
 router.use("*", (req, res) => {
   const newError = new NotFoundError(

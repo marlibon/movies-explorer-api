@@ -8,7 +8,7 @@
 
 ## Ссылки на проект
 
-IP 51.250.70.12
+IP 62.84.116.218
 
 Backend https://api.marlibon.nomoredomains.rocks
 

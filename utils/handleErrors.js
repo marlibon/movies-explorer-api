@@ -13,8 +13,7 @@ const {
 } = http2.constants;
 const { CastError, ValidationError } = mongoose.Error;
 
-function handleErrors (error, response) {
-  console.log(error);
+function handleErrors(error, response) {
   if (error.code === 11000) {
     return response.status(HTTP_STATUS_CONFLICT).send({
       message:

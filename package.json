@@ -1,7 +1,7 @@
 {
-  "name": "shefcheburek-api",
+  "name": "movies-explorer-api",
   "version": "1.0.0",
-  "description": "Бэкенд часть приложения интернет магазин доставки еды",
+  "description": "Бэкенд часть приложения Хранилище любимых фильмов",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marlibon/shefcheburek-api.git"
+    "url": "git+https://github.com/marlibon/movies-explorer-api.git"
   },
   "author": "Marat Zagriev",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/marlibon/shefcheburek-api/issues"
+    "url": "https://github.com/marlibon/movies-explorer-api/issues"
   },
-  "homepage": "https://github.com/marlibon/shefcheburek-api#readme",
+  "homepage": "https://github.com/marlibon/movies-explorer-api#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "celebrate": "^15.0.1",
